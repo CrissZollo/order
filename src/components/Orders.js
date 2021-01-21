@@ -20,6 +20,7 @@ const Orders = () => {
             time: 110
         }
     ];
+
     // const [orderArr = [], setOrders] = useState()
 
 
@@ -45,8 +46,6 @@ const Orders = () => {
         console.log(orderArr.length);
         console.log(orderArr);
 
-        console.log(orderArr.map((order) => <li key={order.id}>{order.name + " " + order.time}</li>))
-
     }
 
     function getValue(e) {
@@ -62,7 +61,6 @@ const Orders = () => {
             <ol>
                 {orderArr.map((order) => <li key={order.id}>{order.name + " " + order.time}</li>)}
             </ol>
-            {/* <OrdersLog allOrders={orderArr} /> */}
         </div>
     )
 
