@@ -1,9 +1,14 @@
+import { useState } from 'react';
 import Orders from "./components/Orders";
 
 function App() {
+  const [allOrders, setOrders] = useState()
+
+
   return (
     <div className="App">
-      <Orders />
+
+      <Orders array={allOrders} />
     </div>
   );
 }
