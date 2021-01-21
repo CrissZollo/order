@@ -3,25 +3,9 @@ import { useState } from 'react';
 const Orders = () => {
 
     let text = "";
-    const orderArr = [
-        {
-            id: 1,
-            name: "Tomato",
-            time: 15
-        },
-        {
-            id: 2,
-            name: "Cuc",
-            time: 3
-        },
-        {
-            id: 3,
-            name: "Pot",
-            time: 110
-        }
-    ];
+    // const orderArr = [];
 
-    // const [orderArr = [], setOrders] = useState()
+    const [orderArr, setOrders] = useState([])
 
 
     function dataprocessor() {
@@ -35,14 +19,12 @@ const Orders = () => {
             });
 
 
-            // setOrders([...orderArr, {
-            //     id: i / 2,
-            //     name: splitArr[i],
-            //     time: !isNaN(parseInt(splitArr[i + 1])) ? parseInt(splitArr[i + 1]) : 0
-            // }])
 
         }
 
+        setOrders([...orderArr, { date: 12 }])
+        console.log(text);
+        console.log(splitArr);
         console.log(orderArr.length);
         console.log(orderArr);
 
