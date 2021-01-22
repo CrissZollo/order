@@ -15,7 +15,7 @@ const Orders = () => {
         for (let i = 0; i < splitArr.length; i += 2) {
             orderArr.push({
                 id: i / 2,
-                name: splitArr[i],
+                name: splitArr[i] === "" ? "Empty" : splitArr[i],
                 time: !isNaN(parseInt(splitArr[i + 1])) ? parseInt(splitArr[i + 1]) : 0
             });
 
