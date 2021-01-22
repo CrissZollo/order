@@ -1,0 +1,1 @@
+Tomato, 50, Potato, 12, Pepper, 47, Chili, 97, Orange, 23

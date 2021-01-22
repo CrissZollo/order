@@ -1,12 +1,13 @@
 import { useState } from 'react';
+import Dispather from './Dispather';
 
 const Orders = () => {
 
     let text = "";
-    // const orderArr = [];
+    //let clicked = false;
 
     const [orderArr, setOrders] = useState([])
-
+    const [clicked, setClick] = useState(false);
 
     function dataprocessor() {
         let splitArr = text.split(", ");
@@ -22,12 +23,8 @@ const Orders = () => {
 
         }
 
-        setOrders([...orderArr, { date: 12 }])
-        console.log(text);
-        console.log(splitArr);
-        console.log(orderArr.length);
-        console.log(orderArr);
-
+        setOrders([...orderArr])
+        setClick(true);
     }
 
     function getValue(e) {
@@ -40,10 +37,8 @@ const Orders = () => {
             <h4>Example: Tomato, 50, Potato, 150, .....</h4>
             <input type="text" onChange={getValue} />
             <button onClick={dataprocessor}>Submit</button>
-            <ol>
-                {orderArr.map((order) => <li key={order.id}>{order.name + " " + order.time}</li>)}
-            </ol>
-        </div>
+            <Dispather orderArr={orderArr} submitted={clicked} />
+        </div >
     )
 
 }
