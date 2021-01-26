@@ -9,8 +9,7 @@ const Dispather = ({ orderArr, submitted }) => {
     function useTimer() {
         if (submitted) {
             const timer = setInterval(() => {
-                setTime(++time)
-                console.log(time)
+                setTime(++time);
             }, 1000)
             return () => clearInterval(timer);
         }

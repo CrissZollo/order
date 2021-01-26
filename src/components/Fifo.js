@@ -83,6 +83,7 @@ function Fifo({ orderArr }) {
     }
 
     const waitingList = new LinkedList();
+    const workingList = new LinkedList();
 
 
 
@@ -90,11 +91,15 @@ function Fifo({ orderArr }) {
         waitingList.addJob({ name: order.name, time: order.time });
     });
 
+
     return (
         <div className="box">
             <h2>FIFO: {waitingList.numberOfJobsInQueue()}</h2>
             {waitingList.listJobs().map((job) => <p key={waitingList.size--}>{job.name + " " + job.time}</p>)}
             {/* <button onClick={ll.addJob()}>Add Defualt Job</button> */}
+            <br />
+            <h2>Working: {workingList.numberOfJobsInQueue()}</h2>
+            {workingList.listJobs().map((job) => <p key={waitingList.size--}>{job.name + " " + job.time}</p>)}
         </div>
     )
 }
