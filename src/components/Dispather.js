@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Fifo from './Fifo';
 
 const Dispather = ({ orderArr, submitted }) => {
 
@@ -8,8 +9,7 @@ const Dispather = ({ orderArr, submitted }) => {
     function useTimer() {
         if (submitted) {
             const timer = setInterval(() => {
-                time++;
-                setTime(time)
+                setTime(time++)
             }, 1000)
             return () => clearInterval(timer);
         }
@@ -18,10 +18,11 @@ const Dispather = ({ orderArr, submitted }) => {
     return (
         <div>
             <ul>
-                {orderArr.map((order) => <li key={order.id}>{order.name + " " + order.time}</li>)}
+                {/* {orderArr.map((order) => <li key={order.id}>{order.name + " " + order.time}</li>)} */}
                 <br />
                 <button onClick={useTimer}>Start Working!</button>
                 <h2>StopWatch Time: {time}</h2>
+                <Fifo orderArr={orderArr} />
             </ul>
         </div>
     )
