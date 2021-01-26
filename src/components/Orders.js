@@ -3,14 +3,14 @@ import Dispather from './Dispather';
 
 const Orders = () => {
 
-    let text = "";
-    //let clicked = false;
+    const [text, setText] = useState("");
 
     const [orderArr, setOrders] = useState([])
     const [clicked, setClick] = useState(false);
 
     function dataprocessor() {
         let splitArr = text.split(", ");
+
 
         for (let i = 0; i < splitArr.length; i += 2) {
             orderArr.push({
@@ -23,12 +23,13 @@ const Orders = () => {
 
         }
 
+
         setOrders([...orderArr])
         setClick(true);
     }
 
     function getValue(e) {
-        text = e.target.value;
+        setText(e.target.value);
     }
 
     return (

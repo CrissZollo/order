@@ -13,6 +13,11 @@ function Fifo({ orderArr }) {
             this.size = 0;
         }
 
+        // Numbers of jobs left
+        numberOfJobsInQueue() {
+            return this.size;
+        }
+
         //insert first Node
         insertFirst(data) {
             this.head = new Node(data, this.head);
@@ -43,13 +48,62 @@ function Fifo({ orderArr }) {
 
         //Insert at Index
         insertAt(data, index) {
+            // If index is out of range
+            if ((index > 0 && index > this.size) || index < 0) {
+                console.error("Index Out Of Range");
+                return;
+            }
 
+            // if first index
+            if (index === 0) {
+                this.insertFirst(data);
+                return;
+            }
+
+            const node = new Node(data);
+            let current, previous;
+
+            // Set current to first
+            current = this.head;
+            let count = 0;
+
+            while (count < index) {
+                previous = current; // Node before index
+                count++;
+                current = current.next; // Node after index
+            }
+
+            node.next = current;
+            previous.next = node;
+
+            this.size++;
         }
 
-        //Get at Index
-
         //Remove at Index
-        removeJob() {
+        removeJob(index) {
+            if ((index > 0 && index > this.size) || index < 0) {
+                console.error("Index Out Of Range");
+                return;
+            }
+
+            let current = this.head
+            let previous;
+            let count = 0;
+
+            //Remove First
+            if (index === 0) {
+                this.head = current.next
+            } else {
+                while (count < index) {
+                    count++;
+                    previous = current
+                    current = current.next;
+                }
+
+                previous.next = current.next
+            }
+
+            this.size--;
 
         }
 
@@ -64,7 +118,7 @@ function Fifo({ orderArr }) {
             let listArr = [];
 
             while (current != null) {
-                console.log(current.data);
+                console.log(current);
                 listArr.push(current.data);
                 current = current.next;
             }
@@ -73,16 +127,24 @@ function Fifo({ orderArr }) {
         }
     }
 
-    const ll = new LinkedList();
+    const waitingList = new LinkedList();
+
+
 
     orderArr.forEach(order => {
-        ll.addJob({ name: order.name, time: order.time });
+        waitingList.addJob({ name: order.name, time: order.time });
     });
+
+    // waitingList.insertAt({ name: "Test", time: 4 }, 0);
+    // waitingList.removeJob(1)
+
+    console.log(waitingList.numberOfJobsInQueue());
 
     return (
         <div className="box">
-            <h2>FIFO</h2>
-            {ll.printListData().map((job) => <p key={ll.size--}>{job.name + " " + job.time}</p>)}
+            <h2>FIFO: {waitingList.numberOfJobsInQueue()}</h2>
+            {waitingList.printListData().map((job) => <p key={waitingList.size--}>{job.name + " " + job.time}</p>)}
+            {/* <button onClick={ll.addJob()}>Add Defualt Job</button> */}
         </div>
     )
 }
