@@ -18,12 +18,6 @@ function Fifo({ orderArr }) {
             return this.size;
         }
 
-        //insert first Node
-        insertFirst(data) {
-            this.head = new Node(data, this.head);
-            this.size++;
-        }
-
         //Insert last Node
         addJob(data) {
             let node = new Node(data);
@@ -42,39 +36,6 @@ function Fifo({ orderArr }) {
 
                 current.next = node;
             }
-
-            this.size++;
-        }
-
-        //Insert at Index
-        insertAt(data, index) {
-            // If index is out of range
-            if ((index > 0 && index > this.size) || index < 0) {
-                console.error("Index Out Of Range");
-                return;
-            }
-
-            // if first index
-            if (index === 0) {
-                this.insertFirst(data);
-                return;
-            }
-
-            const node = new Node(data);
-            let current, previous;
-
-            // Set current to first
-            current = this.head;
-            let count = 0;
-
-            while (count < index) {
-                previous = current; // Node before index
-                count++;
-                current = current.next; // Node after index
-            }
-
-            node.next = current;
-            previous.next = node;
 
             this.size++;
         }
@@ -107,18 +68,12 @@ function Fifo({ orderArr }) {
 
         }
 
-        //Clear list
-        clearList() {
-            this.head = null;
-        }
-
         //Print list data
-        printListData() {
+        listJobs() {
             let current = this.head;
             let listArr = [];
 
             while (current != null) {
-                console.log(current);
                 listArr.push(current.data);
                 current = current.next;
             }
@@ -135,15 +90,10 @@ function Fifo({ orderArr }) {
         waitingList.addJob({ name: order.name, time: order.time });
     });
 
-    // waitingList.insertAt({ name: "Test", time: 4 }, 0);
-    // waitingList.removeJob(1)
-
-    console.log(waitingList.numberOfJobsInQueue());
-
     return (
         <div className="box">
             <h2>FIFO: {waitingList.numberOfJobsInQueue()}</h2>
-            {waitingList.printListData().map((job) => <p key={waitingList.size--}>{job.name + " " + job.time}</p>)}
+            {waitingList.listJobs().map((job) => <p key={waitingList.size--}>{job.name + " " + job.time}</p>)}
             {/* <button onClick={ll.addJob()}>Add Defualt Job</button> */}
         </div>
     )
