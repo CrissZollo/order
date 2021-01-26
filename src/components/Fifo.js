@@ -63,23 +63,17 @@ function Fifo({ orderArr }) {
             let current = this.head;
             let listArr = [];
 
-            while (current) {
-                // console.log(current.data);
+            while (current != null) {
+                console.log(current.data);
                 listArr.push(current.data);
                 current = current.next;
             }
-
-            console.log(listArr)
 
             return listArr
         }
     }
 
     const ll = new LinkedList();
-
-    // ll.insertFirst({ name: "Bla", time: 15 });
-    // ll.insertFirst({ name: "Tjo", time: 30 });
-    // ll.insertFirst({ name: "Din", time: 45 });
 
     orderArr.forEach(order => {
         ll.addJob({ name: order.name, time: order.time });
