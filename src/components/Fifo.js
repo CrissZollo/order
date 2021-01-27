@@ -1,4 +1,6 @@
-function Fifo({ orderArr }) {
+import { useState } from 'react';
+
+function Fifo({ orderArr, sendData }) {
 
     class Node {
         constructor(data, next = null) {
@@ -91,6 +93,19 @@ function Fifo({ orderArr }) {
         waitingList.addJob({ name: order.name, time: order.time });
     });
 
+    workingList.addJob({ name: sendData.name, time: sendData.time });
+    // console.log(sendData);
+
+
+    if (Object.keys(sendData).length !== 0) { // If sendData object is not empty 
+        const interval = setInterval(() => {
+            if (waitingList.size === 0) {
+                clearInterval(interval)
+            }
+
+        }, 100)
+    }
+
 
     return (
         <div className="box">
@@ -99,7 +114,7 @@ function Fifo({ orderArr }) {
             {/* <button onClick={ll.addJob()}>Add Defualt Job</button> */}
             <br />
             <h2>Working: {workingList.numberOfJobsInQueue()}</h2>
-            {workingList.listJobs().map((job) => <p key={waitingList.size--}>{job.name + " " + job.time}</p>)}
+            {workingList.listJobs().map((job) => <p key={workingList.size--}>{job.name + " " + job.time}</p>)}
         </div>
     )
 }
