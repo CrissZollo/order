@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 function Fifo({ orderArr, sendData }) {
 
     class Node {
@@ -84,37 +82,37 @@ function Fifo({ orderArr, sendData }) {
         }
     }
 
-    const waitingList = new LinkedList();
-    const workingList = new LinkedList();
+    const ll = new LinkedList();
 
 
 
-    orderArr.forEach(order => {
-        waitingList.addJob({ name: order.name, time: order.time });
-    });
+    // orderArr.forEach(order => {
+    //     ll.addJob({ name: order.name, time: order.time });
+    // });
 
-    workingList.addJob({ name: sendData.name, time: sendData.time });
-    // console.log(sendData);
-
-
-    if (Object.keys(sendData).length !== 0) { // If sendData object is not empty 
-        const interval = setInterval(() => {
-            if (waitingList.size === 0) {
-                clearInterval(interval)
-            }
-
-        }, 100)
+    if (Object.keys(sendData).length !== 0) { // If sendData object is not empty         
+        ll.addJob({ name: sendData.name, time: sendData.time });
     }
+
+
+    // if (Object.keys(sendData).length !== 0) { // If sendData object is not empty 
+    //     const interval = setInterval(() => {
+    //         if (waitingList.size === 0) {
+    //             clearInterval(interval)
+    //         }
+
+    //     }, 100)
+    // }
 
 
     return (
         <div className="box">
-            <h2>FIFO: {waitingList.numberOfJobsInQueue()}</h2>
-            {waitingList.listJobs().map((job) => <p key={waitingList.size--}>{job.name + " " + job.time}</p>)}
+            <h2>FIFO: {ll.numberOfJobsInQueue()}</h2>
+            {ll.listJobs().map((job) => <p key={ll.size--}>{job.name + " " + job.time}</p>)}
             {/* <button onClick={ll.addJob()}>Add Defualt Job</button> */}
-            <br />
+            {/* <br />
             <h2>Working: {workingList.numberOfJobsInQueue()}</h2>
-            {workingList.listJobs().map((job) => <p key={workingList.size--}>{job.name + " " + job.time}</p>)}
+            {workingList.listJobs().map((job) => <p key={workingList.size--}>{job.name + " " + job.time}</p>)} */}
         </div>
     )
 }
