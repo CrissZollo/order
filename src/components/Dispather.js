@@ -6,6 +6,8 @@ const Dispather = ({ orderArr }) => {
 
     // let [sendingData, setData] = useState({});
 
+    let [stopValue, setStopValue] = useState(0)
+
 
     class Node {
         constructor(data, next = null) {
@@ -91,21 +93,23 @@ const Dispather = ({ orderArr }) => {
 
     const fifoList = new Fifo();
 
+    //const [fifoList, setFifoList] = useState(new Fifo());
+
     let [time, setTime] = useState(0);
 
-    let started = false;
 
-    if (started === false && orderArr.length > 0) {
-        started = true;
-        console.log("hej")
+    function useTimer() {
+        stopValue += orderArr.length + 1;
         const timer = setInterval(() => {
-            if (time === orderArr.length) {
+            if (time === stopValue) {
+                setStopValue(stopValue)
+                // setFifoList(fifoList);
                 clearInterval(timer)
-                started = false;
                 return;
             }
             setTime(time);
             fifoList.addJob(orderArr[orderArr.length - (time + 1)]);
+            orderArr.pop();
             time++;
         }, 1000)
     }
@@ -115,12 +119,12 @@ const Dispather = ({ orderArr }) => {
             <ul>
                 {orderArr.map((order) => <h4 key={order.id}>{order.name + " " + order.time}</h4>)}
                 <br />
-                {/* <button onClick={useTimer}>Start Working!</button> */}
+                <button onClick={useTimer}>Start Working!</button>
                 <h2>Stopwatch Time: {time}</h2>
                 {/* <Fifo orderArr={orderArr} sendData={sendingData} /> */}
                 <div className="box">
                     <h2>FIFO: {fifoList.numberOfJobsInQueue()}</h2>
-                    {fifoList.listJobs().map((job) => <p key={fifoList.size--}>{job.name + " " + job.time}</p>)}
+                    {fifoList.listJobs().map((job) => <p key={fifoList.numberOfJobsInQueue()}>{job.name + " " + job.time}</p>)}
                 </div>
             </ul>
         </div>
