@@ -78,7 +78,7 @@ function Fifo({ orderArr, sendData }) {
                 current = current.next;
             }
 
-            return listArr
+            return listArr;
         }
     }
 
@@ -96,7 +96,7 @@ function Fifo({ orderArr, sendData }) {
 
 
     // if (Object.keys(sendData).length !== 0) { // If sendData object is not empty 
-    //     const interval = setInterval(() => {
+    //     const interval = setInterval+(() => {
     //         if (waitingList.size === 0) {
     //             clearInterval(interval)
     //         }
