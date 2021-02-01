@@ -75,6 +75,10 @@ class FifoList {
         let current = this.head;
         let listArr = [];
 
+        if (this.head == null) {
+            return console.log("Empty");
+        }
+
         // console.log(current);
         while (current != null) {
             console.log(current.data);
@@ -93,7 +97,7 @@ class LifoList {
     }
 
     // Numbers of jobs left
-    size() {
+    length() {
         return this.size;
     }
 
@@ -104,7 +108,7 @@ class LifoList {
     }
 
     //Remove at Index
-    removeJob(index) {
+    removeAt(index) {
         if ((index > 0 && index > this.size) || index < 0) {
             console.error("Index Out Of Range");
             return;
@@ -141,7 +145,11 @@ class LifoList {
         let current = this.head;
         let listArr = [];
 
-        console.log(current);
+        if (this.head == null) {
+            return console.log("Empty");
+        }
+
+        // console.log(current);
         while (current != null) {
             console.log(current.data);
             listArr.push(current.data);
@@ -416,26 +424,28 @@ let count = 0;
 
 const interval = setInterval(() => {
 
-
-
-
     if (count <= orderArr.length - 1) {
         fifoList.insertLast(orderArr[count]);
+        lifoList.insertFirst(orderArr[count]);
     }
 
+    lifoList.printListData();
+    console.log("----------------------------------------------------");
+
+    // fifoList.head.data.time -= 10;
     console.log(fifoList.head.data.time);
-
-
-    fifoList.printListData();
-    console.log("----------------------------------------------------")
-
-    fifoList.head.data.time -= 10;
+    console.log(lifoList.head.data.time);
+    // lifoList.head.data.time -= 10;
     count++;
     if (fifoList.head.data.time <= 0) {
         fifoList.removeAt(0)
     }
+    if (lifoList.head.data.time <= 0) {
+        lifoList.removeAt(0)
+    }
 
     if (fifoList.size <= 0) {
+        lifoList.printListData();
         clearInterval(interval);
         return;
     }
