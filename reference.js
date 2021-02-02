@@ -18,7 +18,10 @@ class FifoList {
 
     //Insert last Node
     insertLast(data) {
-        let node = new Node(data);
+        let node = new Node({
+            name: data.name,
+            time: data.time
+        });
         let current;
 
         // If empty, make head
@@ -103,7 +106,10 @@ class LifoList {
 
     //insert first Node
     insertFirst(data) {
-        this.head = new Node(data, this.head);
+        this.head = new Node({
+            name: data.name,
+            time: data.time
+        }, this.head);
         this.size++;
     }
 
@@ -167,67 +173,36 @@ class CirkleList {
     }
 
     // Numbers of jobs left
-    size() {
+    length() {
         return this.size;
-    }
-
-    //insert first Node
-    insertFirst(data) {
-        this.head = new Node(data, this.head);
-        this.size++;
     }
 
     //Insert last Node
     insertLast(data) {
-        let node = new Node(data);
+        let node = new Node({
+            name: data.name,
+            time: data.time
+        }, this.head);
         let current;
 
-        // If empty, make head
+        // If empty, make head the node
+        // console.log(this.head)
+
         if (this.head == null) {
             this.head = node;
+            this.head.next = this.head
 
         } else {
             current = this.head;
 
-            while (current.next != null) {
-                current = current.next;
+            if (this.length() > 1) {
+                while (current.next != this.head) {
+                    current = current.next;
+                }
             }
-
             current.next = node;
         }
 
-        this.size++;
-    }
-
-    //Insert at Index
-    insertAt(data, index) {
-        // If index is out of range
-        if ((index > 0 && index > this.size) || index < 0) {
-            console.error("Index Out Of Range");
-            return;
-        }
-
-        // if first index
-        if (index === 0) {
-            this.insertFirst(data);
-            return;
-        }
-
-        const node = new Node(data);
-        let current, previous;
-
-        // Set current to first
-        current = this.head;
-        let count = 0;
-
-        while (count < index) {
-            previous = current; // Node before index
-            count++;
-            current = current.next; // Node after index
-        }
-
-        node.next = current;
-        previous.next = node;
 
         this.size++;
     }
@@ -270,11 +245,15 @@ class CirkleList {
         let current = this.head;
         let listArr = [];
 
-        console.log(current);
-        while (current != null) {
-            console.log(current.data);
+        if (this.length() > 1) {
+            while (current.next != this.head) {
+                console.log(current.data);
+                listArr.push(current.data);
+                current = current.next;
+            }
+        } else {
+            console.log(current.data)
             listArr.push(current.data);
-            current = current.next;
         }
 
         // return listArr
@@ -421,31 +400,68 @@ for (let i = 0; i < splitArr.length; i += 2) {
 
 console.log(orderArr);
 let count = 0;
+const time = 10;
 
 const interval = setInterval(() => {
 
-    if (count <= orderArr.length - 1) {
+    if (count < orderArr.length) {
         fifoList.insertLast(orderArr[count]);
         lifoList.insertFirst(orderArr[count]);
+        cirkleList.insertLast(orderArr[count]);
     }
 
-    lifoList.printListData();
+    // cirkleList.printListData()
+
+
+    // console.log("Fifo List")
+    // if (fifoList.length() > 0) {
+    //     fifoList.head.data.time -= time;
+
+    //     if (fifoList.head.data.time <= 0) {
+    //         fifoList.removeAt(0)
+    //     }
+    //     // console.log(fifoList.head.data.time);
+    //     fifoList.printListData();
+    // }
+
+    // console.log("----------------------------------------------------");
+
+    // console.log("Lifo List:")
+    // if (lifoList.length() > 0) {
+    //     lifoList.head.data.time -= time;
+
+    //     if (lifoList.head.data.time <= 0) {
+    //         lifoList.removeAt(0)
+    //     }
+
+    //     // console.log(lifoList.head.data.time);
+    //     lifoList.printListData();
+    // }
+
+    // console.log("----------------------------------------------------");
+
+    // console.log("Circle List:")
+    // if (cirkleList.length() > 0) {
+    //     let current = cirkleList.head;
+    //     for (let i = 0; i < cirkleList.length(); i++) {
+    //         current.data.time -= (time / cirkleList.length())
+    //     }
+
+    //     if (cirkleList.head.data.time <= 0) {
+    //         cirkleList.removeAt(0)
+    //     }
+
+    //     // console.log(cirkleList.head.data.time);
+    //     cirkleList.printListData();
+    // }
+
+    cirkleList.printListData();
     console.log("----------------------------------------------------");
 
-    // fifoList.head.data.time -= 10;
-    console.log(fifoList.head.data.time);
-    console.log(lifoList.head.data.time);
-    // lifoList.head.data.time -= 10;
-    count++;
-    if (fifoList.head.data.time <= 0) {
-        fifoList.removeAt(0)
-    }
-    if (lifoList.head.data.time <= 0) {
-        lifoList.removeAt(0)
-    }
 
-    if (fifoList.size <= 0) {
-        lifoList.printListData();
+    count++;
+
+    if (fifoList.length() <= 0 && lifoList.length() <= 0) {
         clearInterval(interval);
         return;
     }
