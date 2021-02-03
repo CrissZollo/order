@@ -1,7 +1,8 @@
 class Node {
-    constructor(data, next = null) {
+    constructor(data, next = null, previous = null) {
         this.data = data;
         this.next = next;
+        this.previous = previous;
     }
 }
 
@@ -195,11 +196,10 @@ class CirkleList {
         } else {
             current = this.head;
 
-            if (this.length() > 1) {
-                while (current.next != this.head) {
-                    current = current.next;
-                }
+            while (current.next != this.head) {
+                current = current.next;
             }
+
             current.next = node;
         }
 
@@ -208,7 +208,7 @@ class CirkleList {
     }
 
     //Remove at Index
-    removeJob(index) {
+    removeAt(index) {
         if ((index > 0 && index > this.size) || index < 0) {
             console.error("Index Out Of Range");
             return;
@@ -220,7 +220,20 @@ class CirkleList {
 
         //Remove First
         if (index === 0) {
+
+            if (this.length() == 1) {
+                this.clearList();
+                this.size--;
+                return;
+            }
             this.head = current.next
+
+            for (let i = 0; i < this.length(); i++) {
+                current = current.next
+            }
+
+            current.next = this.head;
+
         } else {
             while (count < index) {
                 count++;
@@ -245,17 +258,33 @@ class CirkleList {
         let current = this.head;
         let listArr = [];
 
-        if (this.length() > 1) {
-            while (current.next != this.head) {
+
+        if (this.head == null) {
+            return console.log("Empty")
+        }
+
+        if (current.next == this.head) {
+            console.log(current.data)
+            listArr.push(current.data);
+        } else {
+
+            // For loop needed to get all list items with help of length of list
+
+            for (let i = 0; i < this.length(); i++) {
                 console.log(current.data);
                 listArr.push(current.data);
                 current = current.next;
             }
-        } else {
-            console.log(current.data)
-            listArr.push(current.data);
-        }
 
+            //The while loop won't catch all list items
+
+            // while (current.next != this.head) {
+            //     console.log(current.data);
+            //     listArr.push(current.data);
+            //     current = current.next;
+            // }
+
+        }
         // return listArr
     }
 }
@@ -273,7 +302,18 @@ class DoubleList {
 
     //insert first Node
     insertFirst(data) {
-        this.head = new Node(data, this.head);
+        if (this.head != null) {
+            this.head = new Node({
+                name: data.name,
+                time: data.time
+            }, this.head);
+            this.head.next.previous = this.head;
+        } else {
+            this.head = new Node({
+                name: data.name,
+                time: data.time
+            });
+        }
         this.size++;
     }
 
@@ -333,7 +373,7 @@ class DoubleList {
     }
 
     //Remove at Index
-    removeJob(index) {
+    removeAt(index) {
         if ((index > 0 && index > this.size) || index < 0) {
             console.error("Index Out Of Range");
             return;
@@ -370,9 +410,9 @@ class DoubleList {
         let current = this.head;
         let listArr = [];
 
-        console.log(current);
         while (current != null) {
-            console.log(current.data);
+            console.log(current)
+            // console.log(current.data);
             listArr.push(current.data);
             current = current.next;
         }
@@ -400,7 +440,9 @@ for (let i = 0; i < splitArr.length; i += 2) {
 
 console.log(orderArr);
 let count = 0;
+let index = 0;
 const time = 10;
+let current;
 
 const interval = setInterval(() => {
 
@@ -408,9 +450,11 @@ const interval = setInterval(() => {
         fifoList.insertLast(orderArr[count]);
         lifoList.insertFirst(orderArr[count]);
         cirkleList.insertLast(orderArr[count]);
+        doubleList.insertFirst(orderArr[count]);
     }
 
-    // cirkleList.printListData()
+
+    doubleList.printListData();
 
 
     // console.log("Fifo List")
@@ -442,26 +486,31 @@ const interval = setInterval(() => {
 
     // console.log("Circle List:")
     // if (cirkleList.length() > 0) {
-    //     let current = cirkleList.head;
+    //     current = cirkleList.head;
+    //     index = 0;
     //     for (let i = 0; i < cirkleList.length(); i++) {
+    //         if (cirkleList.head == null) {
+    //             break;
+    //         }
     //         current.data.time -= (time / cirkleList.length())
-    //     }
-
-    //     if (cirkleList.head.data.time <= 0) {
-    //         cirkleList.removeAt(0)
+    //         if (current.data.time <= 0) {
+    //             cirkleList.removeAt(index)
+    //         }
+    //         current = current.next;
+    //         index++;
     //     }
 
     //     // console.log(cirkleList.head.data.time);
     //     cirkleList.printListData();
     // }
 
-    cirkleList.printListData();
+
     console.log("----------------------------------------------------");
 
 
     count++;
 
-    if (fifoList.length() <= 0 && lifoList.length() <= 0) {
+    if (fifoList.length() <= 0 && lifoList.length() <= 0 && cirkleList.length() <= 0) {
         clearInterval(interval);
         return;
     }
