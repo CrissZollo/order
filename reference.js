@@ -1,4 +1,11 @@
 class Node {
+    constructor(data, next = null) {
+        this.data = data;
+        this.next = next;
+    }
+}
+
+class NodeDouble {
     constructor(data, next = null, previous = null) {
         this.data = data;
         this.next = next;
@@ -296,20 +303,20 @@ class DoubleList {
     }
 
     // Numbers of jobs left
-    size() {
+    length() {
         return this.size;
     }
 
     //insert first Node
     insertFirst(data) {
         if (this.head != null) {
-            this.head = new Node({
+            this.head = new NodeDouble({
                 name: data.name,
                 time: data.time
             }, this.head);
             this.head.next.previous = this.head;
         } else {
-            this.head = new Node({
+            this.head = new NodeDouble({
                 name: data.name,
                 time: data.time
             });
@@ -319,7 +326,7 @@ class DoubleList {
 
     //Insert last Node
     insertLast(data) {
-        let node = new Node(data);
+        let node = new NodeDouble(data);
         let current;
 
         // If empty, make head
@@ -353,7 +360,10 @@ class DoubleList {
             return;
         }
 
-        const node = new Node(data);
+        const node = new NodeDouble({
+            name: data.name,
+            time: data.time
+        });
         let current, previous;
 
         // Set current to first
@@ -366,8 +376,14 @@ class DoubleList {
             current = current.next; // Node after index
         }
 
+
+
         node.next = current;
+        node.previous = previous;
         previous.next = node;
+        if (current.next != null) {
+            current.next.previous = node
+        }
 
         this.size++;
     }
@@ -410,12 +426,17 @@ class DoubleList {
         let current = this.head;
         let listArr = [];
 
+
+        if (current == null) {
+            return console.log("Empty");
+        }
+
         while (current != null) {
-            console.log(current)
-            // console.log(current.data);
+            console.log(current.data);
             listArr.push(current.data);
             current = current.next;
         }
+
 
         // return listArr
     }
@@ -441,8 +462,8 @@ for (let i = 0; i < splitArr.length; i += 2) {
 console.log(orderArr);
 let count = 0;
 let index = 0;
-const time = 10;
 let current;
+const time = 10;
 
 const interval = setInterval(() => {
 
@@ -450,59 +471,84 @@ const interval = setInterval(() => {
         fifoList.insertLast(orderArr[count]);
         lifoList.insertFirst(orderArr[count]);
         cirkleList.insertLast(orderArr[count]);
-        doubleList.insertFirst(orderArr[count]);
+
+        current = doubleList.head;
+        if (current != null) {
+
+            let index = 0;
+
+            while (orderArr[count].time > current.data.time && current.next != null) {
+                current = current.next;
+                index++;
+            }
+
+            doubleList.insertAt(orderArr[count], index);
+        } else {
+            doubleList.insertFirst(orderArr[count]);
+        }
     }
 
 
-    doubleList.printListData();
+    console.log("Fifo List")
+    if (fifoList.length() > 0) {
+        fifoList.head.data.time -= time;
 
+        if (fifoList.head.data.time <= 0) {
+            fifoList.removeAt(0)
+        }
+        // console.log(fifoList.head.data.time);
+        fifoList.printListData();
+    }
 
-    // console.log("Fifo List")
-    // if (fifoList.length() > 0) {
-    //     fifoList.head.data.time -= time;
+    console.log("----------------------------------------------------");
 
-    //     if (fifoList.head.data.time <= 0) {
-    //         fifoList.removeAt(0)
-    //     }
-    //     // console.log(fifoList.head.data.time);
-    //     fifoList.printListData();
-    // }
+    console.log("Lifo List:")
+    if (lifoList.length() > 0) {
+        lifoList.head.data.time -= time;
 
-    // console.log("----------------------------------------------------");
+        if (lifoList.head.data.time <= 0) {
+            lifoList.removeAt(0)
+        }
 
-    // console.log("Lifo List:")
-    // if (lifoList.length() > 0) {
-    //     lifoList.head.data.time -= time;
+        // console.log(lifoList.head.data.time);
+        lifoList.printListData();
+    }
 
-    //     if (lifoList.head.data.time <= 0) {
-    //         lifoList.removeAt(0)
-    //     }
+    console.log("----------------------------------------------------");
 
-    //     // console.log(lifoList.head.data.time);
-    //     lifoList.printListData();
-    // }
+    console.log("Circle List:")
+    if (cirkleList.length() > 0) {
+        current = cirkleList.head;
+        index = 0;
+        for (let i = 0; i < cirkleList.length(); i++) {
+            if (cirkleList.head == null) {
+                break;
+            }
+            current.data.time -= (time / cirkleList.length())
+            if (current.data.time <= 0) {
+                cirkleList.removeAt(index)
+            }
+            current = current.next;
+            index++;
+        }
 
-    // console.log("----------------------------------------------------");
+        // console.log(cirkleList.head.data.time);
+        cirkleList.printListData();
+    }
 
-    // console.log("Circle List:")
-    // if (cirkleList.length() > 0) {
-    //     current = cirkleList.head;
-    //     index = 0;
-    //     for (let i = 0; i < cirkleList.length(); i++) {
-    //         if (cirkleList.head == null) {
-    //             break;
-    //         }
-    //         current.data.time -= (time / cirkleList.length())
-    //         if (current.data.time <= 0) {
-    //             cirkleList.removeAt(index)
-    //         }
-    //         current = current.next;
-    //         index++;
-    //     }
+    console.log("----------------------------------------------------");
 
-    //     // console.log(cirkleList.head.data.time);
-    //     cirkleList.printListData();
-    // }
+    console.log("Double List:")
+    if (doubleList.length() > 0) {
+        doubleList.head.data.time -= time;
+
+        if (doubleList.head.data.time <= 0) {
+            doubleList.removeAt(0)
+        }
+
+        // console.log(doubleList.head.data.time);
+        doubleList.printListData();
+    }
 
 
     console.log("----------------------------------------------------");
@@ -510,7 +556,8 @@ const interval = setInterval(() => {
 
     count++;
 
-    if (fifoList.length() <= 0 && lifoList.length() <= 0 && cirkleList.length() <= 0) {
+
+    if (fifoList.length() <= 0 && lifoList.length() <= 0 && cirkleList.length() <= 0 && doubleList.length() <= 0) {
         clearInterval(interval);
         return;
     }
