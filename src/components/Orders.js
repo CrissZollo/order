@@ -3,7 +3,7 @@ import Dispather from './Dispather';
 
 const Orders = () => {
 
-    const [text, setText] = useState("");
+    let text = "";
 
     const [orderArr, setOrders] = useState([])
 
@@ -12,7 +12,6 @@ const Orders = () => {
 
         for (let i = 0; i < splitArr.length; i += 2) {
             orderArr.push({
-                id: i / 2,
                 name: splitArr[i] === "" ? "Empty" : splitArr[i],
                 time: !isNaN(parseInt(splitArr[i + 1])) ? parseInt(splitArr[i + 1]) : 0
             });
@@ -23,10 +22,11 @@ const Orders = () => {
 
 
         setOrders([...orderArr])
+        text = "";
     }
 
     function getValue(e) {
-        setText(e.target.value);
+        text = e.target.value;
     }
 
     return (

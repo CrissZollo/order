@@ -1,31 +1,25 @@
-import { useState } from "react";
+import { Fifo } from "./Fifo";
+import { useState } from 'react';
 
 const Dispather = ({ orderArr }) => {
 
+    // let fifoList = new Fifo();
 
-
-    // let [sendingData, setData] = useState({});
-
-    let [stopValue, setStopValue] = useState(0)
-
-
-
-
-    //const [fifoList, setFifoList] = useState(new Fifo());
-
+    let [fifoList, setFifoList] = useState(new Fifo());
 
     function useTimer() {
-        stopValue += orderArr.length + 1;
+        let count = 0;
         const timer = setInterval(() => {
-            if (time === stopValue) {
-                setStopValue(stopValue)
-                // setFifoList(fifoList);
+            if (count === orderArr.length) {
                 clearInterval(timer)
                 return;
             }
-            fifoList.addJob(orderArr[orderArr.length - (time + 1)]);
-            orderArr.pop();
-            time++;
+            fifoList.insertLast(orderArr[count]);
+            // console.log(fifoList.printListData())
+            // console.log("--------------------------------------")
+            setFifoList(fifoList);
+            console.log(fifoList);
+            count++;
         }, 1000)
     }
 
@@ -35,11 +29,10 @@ const Dispather = ({ orderArr }) => {
                 {orderArr.map((order) => <h4 key={order.id}>{order.name + " " + order.time}</h4>)}
                 <br />
                 <button onClick={useTimer}>Start Working!</button>
-                <h2>Stopwatch Time: {time}</h2>
-                {/* <Fifo orderArr={orderArr} sendData={sendingData} /> */}
                 <div className="box">
-                    <h2>FIFO: {fifoList.numberOfJobsInQueue()}</h2>
-                    {fifoList.listJobs().map((job) => <p key={fifoList.numberOfJobsInQueue()}>{job.name + " " + job.time}</p>)}
+                    <h2>FIFO:</h2>
+                    <Fifo />
+                    {fifoList.printListData() ? fifoList.printListData().map((order) => <p key={fifoList.size + orderArr.length}>{order.name + " " + order.time}</p>) : "Empty"}
                 </div>
             </ul>
         </div>
